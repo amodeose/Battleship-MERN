@@ -28,3 +28,19 @@
   background-repeat: no-repeat;
   background-size: 100%;
 }
+
+.blue {
+  background-color: blue;
+  margin-top: 15px;
+}
+
+.shipCount {
+  display: inline-block;
+  position: absolute;
+  left: 7%;
+  text-align: center;
+}
+
+.App {
+  margin-top: 30px;
+}
