@@ -12,7 +12,8 @@ class App extends Component {
       three: 2,
       four: 1,
       count: 0,
-      memory: []
+      memory: [],
+      direction: false
     }
   }
 
@@ -31,7 +32,8 @@ class App extends Component {
     })
   }
 
-  handleMouseUp = () => {
+  handleMouseUp = (e) => {
+    e.preventDefault();
     const count = this.state.count;
     switch(count) {
       case 1:
@@ -87,23 +89,42 @@ class App extends Component {
     this.setState({
       mouseDown: false,
       count: 0,
-      memory: []
+      memory: [],
+      direction: 0
     });
   }
 
   handleMouseOver = (e) => {
     if (this.state.mouseDown === true && this.state.count < 4) {
+      if (this.state.memory.length === 1) {
+        e.target.style.backgroundColor = "blue";
+        this.state.memory.push(e.target.id);
+        this.setState({
+          count: this.state.count + 1
+        });
+        const stateDirection = e.target.id - this.state.memory[0];
+        this.setState({
+          direction: stateDirection
+        });
+      }
+      const direction = e.target.id - this.state.memory[this.state.memory.length - 1];
+      if (direction == this.state.direction) {
       e.target.style.backgroundColor = "blue";
       this.state.memory.push(e.target.id);
       this.setState({
         count: this.state.count + 1
-      })
+      });
+    }
     }
   }
 
   handleClick = (e) => {
     const tileID = e.target.id;
     document.getElementById(tileID).classList.add('shot');
+  }
+
+  handleButton() {
+    window.location.reload();
   }
 
   render() {
@@ -149,7 +170,6 @@ class App extends Component {
             <div className="tile blue"></div>
             <h3>Remaining: {this.state.four}</h3>
           </div>}
-          
         </div>
         <div className="player boundary" onMouseDown={this.handleMouseDown}>
           {generatePlayerGrid()}
@@ -157,6 +177,7 @@ class App extends Component {
         <div className="opponent boundary">
           {generateOpponentGrid()}
         </div>
+        <button onClick={this.handleButton}>Reset</button>
       </div>
     );
   }
