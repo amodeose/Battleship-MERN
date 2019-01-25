@@ -22,3 +22,9 @@
 .opponent {
   left: 30%;
 }
+
+.shot {
+  background-image: url(./red-x.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}

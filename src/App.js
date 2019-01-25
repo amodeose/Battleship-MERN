@@ -11,6 +11,7 @@ class App extends Component {
   }
 
   handleMouseDown = (e) => {
+    e.preventDefault();
     if (e.target.classList.contains("tile")) {
       e.target.style.backgroundColor = "blue";
     };
@@ -23,7 +24,10 @@ class App extends Component {
   handleMouseUp = () => {
     this.setState({
       mouseDown: false
-    })
+    });
+    this.setState({
+      mouseDown: false
+    });
   }
 
   handleMouseOver = (e) => {
@@ -32,9 +36,14 @@ class App extends Component {
     }
   }
 
+  handleClick = (e) => {
+    const tileID = e.target.id;
+    document.getElementById(tileID).classList.add('shot');
+  }
+
   render() {
 
-    const generateGrid = () => {
+    const generatePlayerGrid = () => {
       const tiles = [];
       for (let i = 1; i < 101; i++) {
         tiles.push(<div id={i} key={i} className="tile" onMouseOver={this.handleMouseOver} ></div>)
@@ -42,13 +51,21 @@ class App extends Component {
       return tiles;
     }
 
+    const generateOpponentGrid = () => {
+      const tiles = [];
+      for (let i = 101; i < 201; i++) {
+        tiles.push(<div id={i} key={i} className="tile" onClick={this.handleClick}></div>)
+      };
+      return tiles;
+    }
+
     return (
-      <div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-        <div className="player boundary">
-          {generateGrid()}
+      <div className="App"  onMouseUp={this.handleMouseUp}>
+        <div className="player boundary" onMouseDown={this.handleMouseDown}>
+          {generatePlayerGrid()}
         </div>
         <div className="opponent boundary">
-          {generateGrid()}
+          {generateOpponentGrid()}
         </div>
       </div>
     );
