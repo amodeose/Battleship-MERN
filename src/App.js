@@ -11,6 +11,7 @@ class App extends Component {
       two: 3,
       three: 2,
       four: 1,
+      complete: false,
       count: 0,
       memory: [],
       direction: false
@@ -40,7 +41,7 @@ class App extends Component {
         if (this.state.one === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "white";
+            tile.style.backgroundColor = "wheat";
           }
           break;
         }
@@ -52,7 +53,7 @@ class App extends Component {
         if (this.state.two === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "white";
+            tile.style.backgroundColor = "wheat";
           }
           break;
         }
@@ -64,7 +65,7 @@ class App extends Component {
         if (this.state.three === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "white";
+            tile.style.backgroundColor = "wheat";
           }
           break;
         }
@@ -76,7 +77,7 @@ class App extends Component {
         if (this.state.four === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "white";
+            tile.style.backgroundColor = "wheat";
           }
           break;
         }
@@ -86,12 +87,21 @@ class App extends Component {
         break;
       default:
     }
+
+    
+
     this.setState({
       mouseDown: false,
       count: 0,
       memory: [],
       direction: 0
     });
+
+    if (this.state.one === 0 && this.state.two === 0 && this.state.three === 0 && this.state.four === 0) {
+      this.setState({
+        complete: true
+      })
+    }
   }
 
   handleMouseOver = (e) => {
@@ -123,8 +133,19 @@ class App extends Component {
     document.getElementById(tileID).classList.add('shot');
   }
 
-  handleButton() {
-    window.location.reload();
+  handleButton = () => {
+    for (let i = 1; i < 101; i++) {
+      const tile = document.getElementById(i);
+      if (tile.style.backgroundColor === "blue") {
+        tile.style.backgroundColor = "wheat";
+      }
+    }
+    this.setState({
+      one: 4,
+      two: 3,
+      three: 2,
+      four: 1
+    })
   }
 
   render() {
@@ -170,14 +191,15 @@ class App extends Component {
             <div className="tile blue"></div>
             <h3>Remaining: {this.state.four}</h3>
           </div>}
+          <button onClick={this.handleButton}>Reset</button>
         </div>
         <div className="player boundary" onMouseDown={this.handleMouseDown}>
           {generatePlayerGrid()}
         </div>
+        {this.state.complete && <button>READY</button>}
         <div className="opponent boundary">
           {generateOpponentGrid()}
         </div>
-        <button onClick={this.handleButton}>Reset</button>
       </div>
     );
   }
