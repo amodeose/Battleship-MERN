@@ -41,7 +41,7 @@ class App extends Component {
         if (this.state.one === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "wheat";
+            tile.style.backgroundColor = "white";
           }
           break;
         }
@@ -53,7 +53,7 @@ class App extends Component {
         if (this.state.two === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "wheat";
+            tile.style.backgroundColor = "white";
           }
           break;
         }
@@ -65,7 +65,7 @@ class App extends Component {
         if (this.state.three === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "wheat";
+            tile.style.backgroundColor = "white";
           }
           break;
         }
@@ -77,7 +77,7 @@ class App extends Component {
         if (this.state.four === 0) {
           for (let i = 0; i < this.state.memory.length; i++) {
             const tile = document.getElementById(this.state.memory[i]);
-            tile.style.backgroundColor = "wheat";
+            tile.style.backgroundColor = "white";
           }
           break;
         }
@@ -97,35 +97,46 @@ class App extends Component {
       direction: 0
     });
 
-    if (this.state.one === 0 && this.state.two === 0 && this.state.three === 0 && this.state.four === 0) {
-      this.setState({
-        complete: true
-      })
-    }
+    setTimeout(() => {
+      if (this.state.one === 0 && this.state.two === 0 && this.state.three === 0 && this.state.four === 0) {
+        this.setState({
+          complete: true
+        })
+      }
+    }, 1000);
+    
   }
 
   handleMouseOver = (e) => {
-    if (this.state.mouseDown === true && this.state.count < 4) {
-      if (this.state.memory.length === 1) {
+    const stateDirection = e.target.id - this.state.memory[0];
+    if (this.state.mouseDown) {
+
+      if (this.state.memory.length === 1 && (stateDirection === -10 || stateDirection === -1 || stateDirection === 1 || stateDirection === 10)) {
         e.target.style.backgroundColor = "blue";
         this.state.memory.push(e.target.id);
         this.setState({
           count: this.state.count + 1
         });
-        const stateDirection = e.target.id - this.state.memory[0];
+        
+        if (stateDirection !== -11 && stateDirection !== -9 && stateDirection !== 9 && stateDirection !== 11) {
+          this.setState({
+            direction: stateDirection
+          });
+        }
+      }
+
+      const direction = e.target.id - this.state.memory[this.state.memory.length - 1];
+
+      if (direction == this.state.direction && this.state.count < 4) {
+        e.target.style.backgroundColor = "blue";
+        this.state.memory.push(e.target.id);
         this.setState({
-          direction: stateDirection
+          count: this.state.count + 1
         });
       }
-      const direction = e.target.id - this.state.memory[this.state.memory.length - 1];
-      if (direction == this.state.direction) {
-      e.target.style.backgroundColor = "blue";
-      this.state.memory.push(e.target.id);
-      this.setState({
-        count: this.state.count + 1
-      });
+
     }
-    }
+
   }
 
   handleClick = (e) => {
@@ -137,14 +148,15 @@ class App extends Component {
     for (let i = 1; i < 101; i++) {
       const tile = document.getElementById(i);
       if (tile.style.backgroundColor === "blue") {
-        tile.style.backgroundColor = "wheat";
+        tile.style.backgroundColor = "white";
       }
     }
     this.setState({
       one: 4,
       two: 3,
       three: 2,
-      four: 1
+      four: 1,
+      complete: false
     })
   }
 
