@@ -141,7 +141,15 @@ class App extends Component {
 
   handleClick = (e) => {
     const tileID = e.target.id;
-    document.getElementById(tileID).classList.add('shot');
+    const attack = document.getElementById(tileID);
+    const defense = document.getElementById(tileID-100);
+    if (defense.style.backgroundColor == "blue") {
+      attack.style.backgroundColor = "red";
+      defense.classList.add('shot');
+    } else {
+    attack.classList.add('shot');
+    defense.classList.add('shot');
+    }
   }
 
   handleButton = () => {
@@ -149,6 +157,10 @@ class App extends Component {
       const tile = document.getElementById(i);
       if (tile.style.backgroundColor === "blue") {
         tile.style.backgroundColor = "white";
+      }
+      if (tile.classList.contains('shot')) {
+        tile.classList.remove('shot');
+        document.getElementById(i+100).classList.remove('shot');
       }
     }
     this.setState({
